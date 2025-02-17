@@ -1,109 +1,88 @@
 #include <ctype.h>
+#include <errno.h>
 #include <pgn.h>
-#include <stddef.h>
+#include <string.h>
 
 #define TAG 1
+#define FAIL(c) ((c) <= 0)
+#define SUCCESS(c) ((c) > 0)
 
-void SkipSpaces(char **content)
-{
-    while (isspace(**content)) (*content)++;
+char match(const char ch, const char *list) {
+  if (!ch)
+    return -1;
+  for (; *list; list++)
+    if (ch == *list)
+      return ch;
+  return 0;
 }
 
-int SkipUntil(char **content, char until)
-{
-    char *cursor = *content;
-    for (; *cursor; ++cursor)
-        if (*cursor == until)
-            break;
-    *content = cursor;
-    return *cursor != until;
+uintptr_t skip(const char **str, const char *list) {
+  uintptr_t size = 0;
+  for (; **str; (*str)++, size++)
+    if (FAIL(match(**str, list)))
+      break;
+  return size;
 }
 
-void SkipAlnum(char **content)
-{
-    while (isalnum(**content)) (*content)++;
+char accept(const char **str, const char *list) {
+  const char r = match(**str, list);
+  if (r >= 0)
+    (*str)++;
+  return r;
 }
 
-intptr_t pgnReadTags(char **content, pgnTag buffer[], uintptr_t bufferSize)
-{
-    int state = 0;
-    int err = 0;
-    int first = 1;
-    intptr_t bufferCursor = 0;
+#define WS "\t\n\v\f\r "
+#define ALNUM "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-    while (
-        **content != '\0' &&
-        !err &&
-        bufferCursor < bufferSize &&
-        !(**content == '\n' && *(*content + 1) == '\n'))
-    {
-        switch (state) // NOLINT(*-multiway-paths-covered)
-        {
-        case 0:
-            SkipSpaces(content);
+int readTag(const char **content, pgnTag *tag) {
 
-            if (**content == '[')
-                state = TAG;
-            else if (**content == ';') // line comment
-                err = SkipUntil(content, '\n');
-            else if (**content == '{') // block comment
-                err = SkipUntil(content, '}');
-            else if (first && **content == '%' && *(*content - 1) == '\n') // custom inst.
-                err = SkipUntil(content, '\n');
-            else
-                err = PGN_UNEXPECTED_CHARACTER;
+  char code = 0;
 
-            ++(*content);
-            continue;
+  skip(content, WS);
 
-        case TAG:
-            SkipSpaces(content);
-            if (!isalnum(**content))
-            {
-                err = PGN_UNEXPECTED_CHARACTER;
-                continue;
-            }
-            buffer[bufferCursor].key = *content;
-            SkipAlnum(content);
-            if (!**content)
-                continue;
+  if (FAIL(accept(content, "["))) {
+    return PGN_NOT_TAG;
+  }
 
-            **content = '\0';
-            ++(*content);
+  skip(content, WS);
 
-            SkipSpaces(content);
-            if (**content != '"')
-            {
-                err = PGN_TAG_MISSING_VALUE;
-                continue;
-            }
-            ++(*content);
+  tag->key = *content;
+  for (tag->keyLen = 0; SUCCESS(code = accept(content, ALNUM)); tag->keyLen++) {
+  }
+  if (code < 0)
+    return PGN_NOT_EXPECTED_EOF;
 
-            buffer[bufferCursor].value = *content;
-            err = SkipUntil(content, '"');
-            if (err != PGN_SUCCESS)
-                continue;
-            **content = '\0';
-            ++(*content);
+  if (!match(code, WS)) {
+    return PGN_NOT_ENOUGH_WHITESPACE;
+  }
 
-            SkipSpaces(content);
-            if (**content != ']')
-            {
-                err = PGN_TAG_NOT_CLOSED;
-                continue;
-            }
-            ++(*content);
+  skip(content, WS);
 
-            bufferCursor++;
-            state = 0;
-        }
+  if (FAIL(accept(content, "\""))) {
+    return PGN_NO_VALUE;
+  }
 
-        first = 0;
-    }
+  tag->value = *content;
+  for (tag->valueLen = 0; FAIL(code = accept(content, "\"")); tag->valueLen++) {
+  }
+  if (code < 0)
+    return PGN_NOT_EXPECTED_EOF;
 
-    if (!err && **content == '\n' && *(*content + 1) == '\n')
-        *content += 2;
+  skip(content, WS);
 
-EXIT:
-    return err ? err : bufferCursor;
+  if (FAIL(accept(content, "]"))) {
+    return PGN_NOT_CLOSED;
+  }
+
+  return 0;
+}
+
+enum pgnError pgnReadTags(const char **content, pgnTag buf[], uintptr_t *len) {
+  uintptr_t i = 0;
+  int code = 0;
+  for (; i < *len && !((code = readTag(content, &buf[i]))); i++)
+    if (strncmp(*content, "\n\n", 2) == 0)
+      break;
+  *len = i;
+  return code;
 }
