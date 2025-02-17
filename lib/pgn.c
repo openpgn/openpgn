@@ -1,5 +1,3 @@
-#include <ctype.h>
-#include <errno.h>
 #include <pgn.h>
 #include <string.h>
 
@@ -10,10 +8,7 @@
 char match(const char ch, const char *list) {
   if (!ch)
     return -1;
-  for (; *list; list++)
-    if (ch == *list)
-      return ch;
-  return 0;
+  return (char)(strchr(list, ch) ? ch : 0);
 }
 
 uintptr_t skip(const char **str, const char *list) {
