@@ -42,8 +42,8 @@ typedef struct __pgnMove {
 extern "C" {
 #endif
 
-enum pgnError pgnReadTags(const char **content, pgnTag buf[], uintptr_t* len);
-enum pgnError pgnReadMoves(const char **content, pgnMove buf[], uintptr_t* len);
+enum pgnError pgnTags(const char **content, pgnTag buf[], uintptr_t* len);
+enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t* len);
 
 #if __cplusplus
 }

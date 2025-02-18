@@ -28,6 +28,7 @@ char accept(const char **str, const char *list) {
 
 #define WS "\t\n\v\f\r "
 #define ALNUM "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+#define NUM "0123456789"
 
 int readTag(const char **content, pgnTag *tag) {
 
@@ -72,7 +73,7 @@ int readTag(const char **content, pgnTag *tag) {
   return 0;
 }
 
-enum pgnError pgnReadTags(const char **content, pgnTag buf[], uintptr_t *len) {
+enum pgnError pgnTags(const char **content, pgnTag buf[], uintptr_t *len) {
   uintptr_t i = 0;
   int code = 0;
   for (; i < *len && !((code = readTag(content, &buf[i]))); i++)

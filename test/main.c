@@ -46,7 +46,7 @@ int main(int argc, const char *argv[]) {
   buffer[size] = '\0';
 
 
-  if ((code = pgnReadTags(&cursor, tags, &len))) {
+  if ((code = pgnTags(&cursor, tags, &len))) {
     fprintf(stderr, "error: pgnReadTags failed with code %d\n", code);
     goto EXIT;
   }
