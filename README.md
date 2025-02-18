@@ -1,6 +1,6 @@
 # OpenPGN
 
-OpenPGN is open-source, light-weight PGN parser, written in C.
+OpenPGN is open-source, light-weight PGN parser, written in C99.
 
 > [!NOTE]
 > PGN is an abbreviation for Portable Game Notation, a standard plain text format for recording chess games
@@ -24,8 +24,8 @@ intptr_t tagCount, moveCount;
 pgnTag tags[256];
 pgnMove moves[8192];
 
-while ((tagCount  = pgnReadTags(&cursor, tags, 256))    > 0 &&
-       (moveCount = pgnReadMoves(&cursor, moves, 8192)) > 0) {
+while ((tagCount  = pgnTags(&cursor, tags, 256))    > 0 &&
+       (moveCount = pgnMoves(&cursor, moves, 8192)) > 0) {
     // do stuff...
 }
 
@@ -36,13 +36,8 @@ if (tagCount < 0) {
 }
 ```
 
-You can use `pgnReadTags` and `pgnReadMoves` to read PGN file.
+You can use `pgnTags` and `pgnMoves` to read PGN file.
 Umm... It's all of this library.
-
-> [!WARNING]
-> `pgnReadTags` and `pgnReadMoves` may change data pointed by cursor.
-> It's intended to achieve zero-copy parsing.
-> Not to change data, Copy data.
 
 I have no plan to expand parser for rich features.
 OpenPGN should be kept easy-to-use and simple.
