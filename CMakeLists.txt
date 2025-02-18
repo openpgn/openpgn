@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.31)
 project(OpenPGN C)
 
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(GLOB_RECURSE SOURCES lib/*.c)
 file(GLOB_RECURSE HEADERS include/*.h)
