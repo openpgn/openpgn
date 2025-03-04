@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define PGN_INTERNAL __attribute__((visibility("hidden")))
+
 #define FAIL(c) ((c) <= 0)
 #define EOF(c) ((c) < 0)
 #define SUCCESS(c) ((c) > 0)
@@ -15,9 +17,9 @@
 extern "C" {
 #endif
 
-char match(char ch, const char *list);
-uintptr_t skip(const char **str, const char *list);
-char accept(const char **str, const char *list);
+PGN_INTERNAL char match(char ch, const char *list);
+PGN_INTERNAL uintptr_t skip(const char **str, const char *list);
+PGN_INTERNAL char accept(const char **str, const char *list);
 
 #if __cplusplus
 }
