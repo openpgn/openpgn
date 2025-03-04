@@ -1,0 +1,21 @@
+#pragma once
+
+#cmakedefine CMAKE_CURRENT_LIST_DIR "@CMAKE_CURRENT_LIST_DIR@"
+
+#define PGN_SAMPLE(name, file) \
+__asm__( \
+  ".section .rodata                                        \n" \
+  ".global " #name "                                       \n" \
+  #name ":                                                 \n" \
+  ".incbin \"" CMAKE_CURRENT_LIST_DIR "/samples/" file "\" \n" \
+  ".byte 0                                                 \n" \
+); \
+extern const char name ;
+
+PGN_SAMPLE(__sample, "sample.pgn")
+PGN_SAMPLE(__sample_fail_1, "sample-fail-1.pgn")
+PGN_SAMPLE(__sample_fail_2_0, "sample-fail-2-0.pgn")
+PGN_SAMPLE(__sample_fail_2_1, "sample-fail-2-1.pgn")
+PGN_SAMPLE(__sample_fail_3, "sample-fail-3.pgn")
+PGN_SAMPLE(__sample_fail_4, "sample-fail-4.pgn")
+PGN_SAMPLE(__sample_fail_5, "sample-fail-5.pgn")

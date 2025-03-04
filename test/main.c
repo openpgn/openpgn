@@ -1,56 +1,38 @@
-#include "pgn.h"
+#include "sample.h"
 
+#include <assert.h>
+#include <pgn.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-int main(int argc, const char *argv[]) {
-  FILE *f = NULL;
-  long size = 0;
-  const char *filename = NULL;
-  char *buffer = NULL;
-  char *cursor = NULL;
+#define PGN_DUMP_TO_STDOUT 0
+
+int run(const char *cursor);
+
+int main() {
+  assert(run(&__sample) == 0);
+  assert(run(&__sample_fail_1) == 1);
+  assert(run(&__sample_fail_2_0) == 2);
+  assert(run(&__sample_fail_2_1) == 2);
+  assert(run(&__sample_fail_3) == 3);
+  assert(run(&__sample_fail_4) == 4);
+  assert(run(&__sample_fail_5) == 5);
+
+  return 0;
+}
+
+int run(const char *cursor) {
   pgnTag tags[256];
-  uintptr_t len = sizeof tags / sizeof tags[0];
+  uintptr_t len = sizeof(tags) / sizeof(tags[0]);
   enum pgnError code;
-  char strBuf[256];
-
-  if (argc != 2) {
-    fprintf(stderr,
-            "error: invalid invocation\n"
-            "usage: %s [filename]\n",
-            argv[0]);
-    goto EXIT;
-  }
-
-  filename = argv[1];
-  f = fopen(filename, "r");
-  if (f == NULL) {
-    perror(filename);
-    goto EXIT;
-  }
-
-  fseek(f, 0, SEEK_END);
-  size = ftell(f);
-  fseek(f, 0, SEEK_SET);
-
-  cursor = buffer = malloc(size + 1);
-  if (buffer == NULL) {
-    perror("malloc");
-    goto EXIT;
-  }
-
-  fread(buffer, 1, size, f);
-  fclose(f);
-
-  buffer[size] = '\0';
-
 
   if ((code = pgnTags(&cursor, tags, &len))) {
     fprintf(stderr, "error: pgnReadTags failed with code %d\n", code);
-    goto EXIT;
+    return code;
   }
 
+#if PGN_DUMP_TO_STDOUT
+  char strBuf[256];
   for (int i = 0; i < len; i++) {
     strncpy(strBuf, tags[i].key, tags[i].keyLen);
     strBuf[tags[i].keyLen] = 0;
@@ -60,9 +42,7 @@ int main(int argc, const char *argv[]) {
     strBuf[tags[i].valueLen] = 0;
     printf("%s\n", strBuf);
   }
+#endif
 
-EXIT:
-  if (buffer)
-    free(buffer);
   return EXIT_SUCCESS;
 }
