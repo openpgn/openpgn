@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 enum pgnError {
+  PGN_SUCCESS = 0,
   PGN_NOT_TAG,
   PGN_NOT_EXPECTED_EOF,
   PGN_NOT_ENOUGH_WHITESPACE,
