@@ -1,8 +1,8 @@
 #include <pgn.h>
 #include <string.h>
 
-#define TAG 1
 #define FAIL(c) ((c) <= 0)
+#define EOF(c) ((c) < 0)
 #define SUCCESS(c) ((c) > 0)
 
 char match(const char ch, const char *list) {
@@ -33,6 +33,7 @@ char accept(const char **str, const char *list) {
 int readTag(const char **content, pgnTag *tag) {
 
   char code = 0;
+  char last = 0;
 
   skip(content, WS);
 
@@ -43,12 +44,13 @@ int readTag(const char **content, pgnTag *tag) {
   skip(content, WS);
 
   tag->key = *content;
-  for (tag->keyLen = 0; SUCCESS(code = accept(content, ALNUM)); tag->keyLen++) {
+  for (tag->keyLen = 0; !match(**content, WS) && SUCCESS(code = accept(content, ALNUM)); tag->keyLen++) {
+    last = **content;
   }
-  if (code < 0)
+  if (!last) // check EOF
     return PGN_NOT_EXPECTED_EOF;
 
-  if (!match(code, WS)) {
+  if (FAIL(match(last, WS))) {
     return PGN_NOT_ENOUGH_WHITESPACE;
   }
 
@@ -59,9 +61,9 @@ int readTag(const char **content, pgnTag *tag) {
   }
 
   tag->value = *content;
-  for (tag->valueLen = 0; FAIL(code = accept(content, "\"")); tag->valueLen++) {
+  for (tag->valueLen = 0; FAIL(code = accept(content, "\"")) && !EOF(code); tag->valueLen++) {
   }
-  if (code < 0)
+  if (EOF(code))
     return PGN_NOT_EXPECTED_EOF;
 
   skip(content, WS);
