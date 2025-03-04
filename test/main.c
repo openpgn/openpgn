@@ -11,12 +11,12 @@ int run(const char *cursor);
 
 int main() {
   assert(run(&__sample) == 0);
-  assert(run(&__sample_fail_1) == 1);
-  assert(run(&__sample_fail_2_0) == 2);
-  assert(run(&__sample_fail_2_1) == 2);
-  assert(run(&__sample_fail_3) == 3);
-  assert(run(&__sample_fail_4) == 4);
-  assert(run(&__sample_fail_5) == 5);
+  assert(run(&__sample_fail_1) == PGN_NOT_TAG);
+  assert(run(&__sample_fail_2_0) == PGN_NOT_EXPECTED_EOF);
+  assert(run(&__sample_fail_2_1) == PGN_NOT_EXPECTED_EOF);
+  assert(run(&__sample_fail_3) == PGN_NOT_ENOUGH_WHITESPACE);
+  assert(run(&__sample_fail_4) == PGN_NO_VALUE);
+  assert(run(&__sample_fail_5) == PGN_NOT_CLOSED);
 
   return 0;
 }
