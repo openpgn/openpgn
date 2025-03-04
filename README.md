@@ -1,6 +1,6 @@
 # OpenPGN
 
-OpenPGN is open-source, light-weight PGN parser, written in C99.
+OpenPGN is single-pass, zero-copy PGN parser, written in C99.
 
 > [!NOTE]
 > PGN is an abbreviation for Portable Game Notation, a standard plain text format for recording chess games
@@ -8,13 +8,13 @@ OpenPGN is open-source, light-weight PGN parser, written in C99.
 
 ## Status
 
-- [x] `pgnReadTags`
-- [ ] `pgnReadMoves`
+- [x] `pgnTags`
+- [ ] `pgnMoves`
 
 ## Usage
 
 ```c
-#include <pgn.h>
+#include <pgn/pgn.h>
 
 ...
 
