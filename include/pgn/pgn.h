@@ -1,5 +1,5 @@
-#ifndef OPENPGN_LIBRARY_H
-#define OPENPGN_LIBRARY_H
+#ifndef OPENPGN_PGN_H
+#define OPENPGN_PGN_H
 
 #include <stdint.h>
 
@@ -50,4 +50,4 @@ enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t* len);
 }
 #endif
 
-#endif // OPENPGN_LIBRARY_H
+#endif // OPENPGN_PGN_H

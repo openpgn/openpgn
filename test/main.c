@@ -1,7 +1,7 @@
 #include "sample.h"
 
+#include <pgn/pgn.h>
 #include <assert.h>
-#include <pgn.h>
 #include <stdio.h>
 #include <stdlib.h>
 
