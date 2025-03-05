@@ -19,3 +19,9 @@ PGN_SAMPLE(__sample_no_delimiter, "sample-no-delimiter.pgn")
 PGN_SAMPLE(__sample_no_begin_quote, "sample-no-begin-quote.pgn")
 PGN_SAMPLE(__sample_no_end_quote, "sample-no-end-quote.pgn")
 PGN_SAMPLE(__sample_no_end_bracket, "sample-no-end-bracket.pgn")
+
+PGN_SAMPLE(__sample_inv_seq_delimiter, "sample-inv-seq-delimiter.pgn")
+
+PGN_SAMPLE(__sample_unknown_piece, "sample-unknown-piece.pgn")
+PGN_SAMPLE(__sample_no_file, "sample-no-file.pgn")
+PGN_SAMPLE(__sample_no_rank, "sample-no-rank.pgn")

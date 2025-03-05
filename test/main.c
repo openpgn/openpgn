@@ -19,6 +19,14 @@ int main() {
   assert(run(&__sample_no_end_quote) == PGN_NO_END_QUOTE);
   assert(run(&__sample_no_end_bracket) == PGN_NO_END_BRACKET);
 
+  // PGN_NO_SEQ_NUM is ignored internally to handle seq number easily
+  // assert(run(&__sample_no_seq_num) == PGN_NO_SEQ_NUM);
+  assert(run(&__sample_inv_seq_delimiter) == PGN_INV_SEQ_DELIMITER);
+
+  assert(run(&__sample_unknown_piece) == PGN_UNKNOWN_PIECE);
+  assert(run(&__sample_no_file) == PGN_NO_FILE);
+  assert(run(&__sample_no_rank) == PGN_NO_RANK);
+
   return 0;
 }
 
