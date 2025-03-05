@@ -16,7 +16,7 @@ int readPager(const char **content) {
 
   skip(stream, WS);
 
-  if (!take(stream, NUM)) {
+  if (!skip(stream, NUM)) {
     return PGN_NO_SEQ_NUM;
   }
   const uintptr_t ellipsis = skip(stream, ".");
@@ -30,6 +30,8 @@ int readPager(const char **content) {
 int readMisc(const char **content, pgnMove *move) {
   pgnStream stream;
   stream.content = content;
+
+  skip(stream, WS);
 
   // enpassant
   if (IS("e.p.")) {
