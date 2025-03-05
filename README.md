@@ -8,7 +8,7 @@ OpenPGN is single-pass, zero-copy PGN parser, written in C99.
 
 ## Status
 
-- [x] `pgnTags` (tested; *100% coverage* with samples)
+- [x] `pgnTags` (tested; **100% coverage** with samples)
 - [x] `pgnMoves` (not-tested)
 
 ## Missing Features
