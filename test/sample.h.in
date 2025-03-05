@@ -13,9 +13,9 @@ __asm__( \
 extern const char name ;
 
 PGN_SAMPLE(__sample, "sample.pgn")
-PGN_SAMPLE(__sample_fail_1, "sample-fail-1.pgn")
-PGN_SAMPLE(__sample_fail_2_0, "sample-fail-2-0.pgn")
-PGN_SAMPLE(__sample_fail_2_1, "sample-fail-2-1.pgn")
-PGN_SAMPLE(__sample_fail_3, "sample-fail-3.pgn")
-PGN_SAMPLE(__sample_fail_4, "sample-fail-4.pgn")
-PGN_SAMPLE(__sample_fail_5, "sample-fail-5.pgn")
+PGN_SAMPLE(__sample_no_begin_bracket, "sample-no-begin-bracket.pgn")
+PGN_SAMPLE(__sample_no_key, "sample-no-key.pgn")
+PGN_SAMPLE(__sample_no_delimiter, "sample-no-delimiter.pgn")
+PGN_SAMPLE(__sample_no_begin_quote, "sample-no-begin-quote.pgn")
+PGN_SAMPLE(__sample_no_end_quote, "sample-no-end-quote.pgn")
+PGN_SAMPLE(__sample_no_end_bracket, "sample-no-end-bracket.pgn")
