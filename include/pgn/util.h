@@ -6,10 +6,6 @@
 
 #define PGN_INTERNAL __attribute__((visibility("hidden")))
 
-#define FAIL(c) ((c) <= 0)
-#define EOF(c) ((c) < 0)
-#define SUCCESS(c) ((c) > 0)
-
 #define WS "\t\n\v\f\r "
 #define ALNUM "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 #define NUM "0123456789"
@@ -24,9 +20,9 @@ typedef struct __pgnStream {
 
 PGN_INTERNAL bool is(pgnStream stream, const char *list);
 PGN_INTERNAL bool eof(pgnStream stream);
-PGN_INTERNAL char take(const pgnStream* stream, const char *list);
-PGN_INTERNAL uintptr_t skip(const pgnStream* stream, const char *list);
-PGN_INTERNAL uintptr_t until(const pgnStream* stream, const char *list);
+PGN_INTERNAL char take(pgnStream stream, const char *list);
+PGN_INTERNAL uintptr_t skip(pgnStream stream, const char *list);
+PGN_INTERNAL uintptr_t until(pgnStream stream, const char *list);
 PGN_INTERNAL const char *cursor(pgnStream stream);
 
 #if __cplusplus

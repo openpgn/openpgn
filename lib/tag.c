@@ -3,32 +3,31 @@
 #include <string.h>
 
 int readTag(const char **content, pgnTag *tag) {
-
-  struct __pgnStream stream;
+  pgnStream stream;
   stream.content = content;
 
-  skip(&stream, WS);
+  skip(stream, WS);
 
-  if (!take(&stream, "["))
+  if (!take(stream, "["))
     return PGN_NO_BEGIN_BRACKET;
 
   if (!is(stream, ALNUM))
     return PGN_NO_KEY;
 
   tag->key = cursor(stream);
-  tag->keyLen = skip(&stream, ALNUM);
-  if (!skip(&stream, WS))
+  tag->keyLen = skip(stream, ALNUM);
+  if (!skip(stream, WS))
     return PGN_NO_DELIMITER;
 
-  if (!take(&stream, "\""))
+  if (!take(stream, "\""))
     return PGN_NO_BEGIN_QUOTE;
 
   tag->value = cursor(stream);
-  tag->valueLen = until(&stream, "\"\n");
-  if (!take(&stream, "\""))
+  tag->valueLen = until(stream, "\"\n");
+  if (!take(stream, "\""))
     return PGN_NO_END_QUOTE;
 
-  if (!take(&stream, "]"))
+  if (!take(stream, "]"))
     return PGN_NO_END_BRACKET;
 
   return 0;

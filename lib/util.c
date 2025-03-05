@@ -15,28 +15,28 @@ bool eof(const pgnStream stream) {
   return **stream.content == 0;
 }
 
-char take(const pgnStream* stream, const char *list) {
-  if (!is(*stream, list))
+char take(const pgnStream stream, const char *list) {
+  if (!is(stream, list))
     return 0;
 
-  const char r = **stream->content;
-  (*stream->content)++;
+  const char r = **stream.content;
+  (*stream.content)++;
   return r;
 }
 
-uintptr_t skip(const pgnStream* stream, const char *list) {
+uintptr_t skip(const pgnStream stream, const char *list) {
   uintptr_t size = 0;
-  for (; is(*stream, list); size++) {
-    (*stream->content)++;
+  for (; is(stream, list); size++) {
+    (*stream.content)++;
   }
 
   return size;
 }
 
-uintptr_t until(const pgnStream* stream, const char *list) {
+uintptr_t until(const pgnStream stream, const char *list) {
   uintptr_t size = 0;
-  for (; !eof(*stream) && !is(*stream, list); size++) {
-    (*stream->content)++;
+  for (; !eof(stream) && !is(stream, list); size++) {
+    (*stream.content)++;
   }
 
   return size;
