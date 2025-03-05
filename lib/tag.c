@@ -4,45 +4,32 @@
 
 int readTag(const char **content, pgnTag *tag) {
 
-  char code = 0;
-  char last = 0;
+  struct __pgnStream stream;
+  stream.content = content;
 
-  skip(content, WS);
+  skip(&stream, WS);
 
-  if (FAIL(accept(content, "["))) {
-    return PGN_NOT_TAG;
-  }
+  if (!take(&stream, "["))
+    return PGN_NO_BEGIN_BRACKET;
 
-  skip(content, WS);
+  if (!is(stream, ALNUM))
+    return PGN_NO_KEY;
 
-  tag->key = *content;
-  for (tag->keyLen = 0; !match(**content, WS) && SUCCESS(code = accept(content, ALNUM)); tag->keyLen++) {
-    last = **content;
-  }
-  if (!last) // check EOF
-    return PGN_NOT_EXPECTED_EOF;
+  tag->key = cursor(stream);
+  tag->keyLen = skip(&stream, ALNUM);
+  if (!skip(&stream, WS))
+    return PGN_NO_DELIMITER;
 
-  if (FAIL(match(last, WS))) {
-    return PGN_NOT_ENOUGH_WHITESPACE;
-  }
+  if (!take(&stream, "\""))
+    return PGN_NO_BEGIN_QUOTE;
 
-  skip(content, WS);
+  tag->value = cursor(stream);
+  tag->valueLen = until(&stream, "\"\n");
+  if (!take(&stream, "\""))
+    return PGN_NO_END_QUOTE;
 
-  if (FAIL(accept(content, "\""))) {
-    return PGN_NO_VALUE;
-  }
-
-  tag->value = *content;
-  for (tag->valueLen = 0; FAIL(code = accept(content, "\"")) && !EOF(code); tag->valueLen++) {
-  }
-  if (EOF(code))
-    return PGN_NOT_EXPECTED_EOF;
-
-  skip(content, WS);
-
-  if (FAIL(accept(content, "]"))) {
-    return PGN_NOT_CLOSED;
-  }
+  if (!take(&stream, "]"))
+    return PGN_NO_END_BRACKET;
 
   return 0;
 }

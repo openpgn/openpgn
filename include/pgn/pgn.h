@@ -5,11 +5,13 @@
 
 enum pgnError {
   PGN_SUCCESS = 0,
-  PGN_NOT_TAG,
-  PGN_NOT_EXPECTED_EOF,
-  PGN_NOT_ENOUGH_WHITESPACE,
-  PGN_NO_VALUE,
-  PGN_NOT_CLOSED,
+
+  PGN_NO_BEGIN_BRACKET,
+  PGN_NO_KEY,
+  PGN_NO_DELIMITER,
+  PGN_NO_BEGIN_QUOTE,
+  PGN_NO_END_QUOTE,
+  PGN_NO_END_BRACKET
 };
 
 enum pgnColor : uint8_t { PGN_BLACK = 0, PGN_WHITE = 1 };
@@ -31,19 +33,24 @@ typedef struct __pgnTag {
 } pgnTag;
 
 typedef struct __pgnMove {
-  /// A zero-based row index. 0 means A, 7 means H.
-  uint8_t row : 3;
-  /// A zero-based column index. 0 means 1, 7 means 8.
-  uint8_t col : 3;
+  /// (optional) A one-based row index. 1 means A, 8 means H. 0 means none.
+  uint8_t fromFile : 4;
+  /// (optional) A one-based column index. 0 means none.
+  uint8_t fromRank : 4;
+  /// A one-based row index. 1 means A, 8 means H.
+  uint8_t toFile : 4;
+  /// A one-based column index.
+  uint8_t toRank : 4;
   enum pgnPiece piece : 3;
-  enum pgnColor color : 1;
 } pgnMove;
 
 #if __cplusplus
 extern "C" {
 #endif
 
+__attribute__((visibility("default")))
 enum pgnError pgnTags(const char **content, pgnTag buf[], uintptr_t* len);
+__attribute__((visibility("default")))
 enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t* len);
 
 #if __cplusplus

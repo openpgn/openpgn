@@ -2,6 +2,7 @@
 #define OPENPGN_UTIL_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define PGN_INTERNAL __attribute__((visibility("hidden")))
 
@@ -17,9 +18,16 @@
 extern "C" {
 #endif
 
-PGN_INTERNAL char match(char ch, const char *list);
-PGN_INTERNAL uintptr_t skip(const char **str, const char *list);
-PGN_INTERNAL char accept(const char **str, const char *list);
+typedef struct __pgnStream {
+  const char **content;
+} pgnStream;
+
+PGN_INTERNAL bool is(pgnStream stream, const char *list);
+PGN_INTERNAL bool eof(pgnStream stream);
+PGN_INTERNAL char take(const pgnStream* stream, const char *list);
+PGN_INTERNAL uintptr_t skip(const pgnStream* stream, const char *list);
+PGN_INTERNAL uintptr_t until(const pgnStream* stream, const char *list);
+PGN_INTERNAL const char *cursor(pgnStream stream);
 
 #if __cplusplus
 }

@@ -1,9 +1,10 @@
 #include "sample.h"
 
-#include <pgn/pgn.h>
 #include <assert.h>
+#include <pgn/pgn.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define PGN_DUMP_TO_STDOUT 0
 
@@ -11,12 +12,12 @@ int run(const char *cursor);
 
 int main() {
   assert(run(&__sample) == 0);
-  assert(run(&__sample_fail_1) == PGN_NOT_TAG);
-  assert(run(&__sample_fail_2_0) == PGN_NOT_EXPECTED_EOF);
-  assert(run(&__sample_fail_2_1) == PGN_NOT_EXPECTED_EOF);
-  assert(run(&__sample_fail_3) == PGN_NOT_ENOUGH_WHITESPACE);
-  assert(run(&__sample_fail_4) == PGN_NO_VALUE);
-  assert(run(&__sample_fail_5) == PGN_NOT_CLOSED);
+  assert(run(&__sample_no_begin_bracket) == PGN_NO_BEGIN_BRACKET);
+  assert(run(&__sample_no_key) == PGN_NO_KEY);
+  assert(run(&__sample_no_delimiter) == PGN_NO_DELIMITER);
+  assert(run(&__sample_no_begin_quote) == PGN_NO_BEGIN_QUOTE);
+  assert(run(&__sample_no_end_quote) == PGN_NO_END_QUOTE);
+  assert(run(&__sample_no_end_bracket) == PGN_NO_END_BRACKET);
 
   return 0;
 }
@@ -24,16 +25,17 @@ int main() {
 int run(const char *cursor) {
   pgnTag tags[256];
   uintptr_t len = sizeof(tags) / sizeof(tags[0]);
+  uintptr_t tagL = sizeof(tags) / sizeof(tags[0]);
   enum pgnError code;
 
-  if ((code = pgnTags(&cursor, tags, &len))) {
-    fprintf(stderr, "error: pgnReadTags failed with code %d\n", code);
+  if ((code = pgnTags(&cursor, tags, &tagL))) {
+    fprintf(stderr, "error: pgnTags failed with code %d\n", code);
     return code;
   }
 
 #if PGN_DUMP_TO_STDOUT
   char strBuf[256];
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < tagL; i++) {
     strncpy(strBuf, tags[i].key, tags[i].keyLen);
     strBuf[tags[i].keyLen] = 0;
     printf("%s = ", strBuf);

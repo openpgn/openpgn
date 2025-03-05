@@ -1,23 +1,47 @@
+#include <assert.h>
 #include <pgn/util.h>
 #include <string.h>
 
-char match(const char ch, const char *list) {
-  if (!ch)
-    return -1;
-  return (char)(strchr(list, ch) ? ch : 0);
+bool is(const pgnStream stream, const char *list) {
+  assert(list != NULL);
+  assert(stream.content != NULL && *stream.content != NULL);
+
+  return strchr(list, **stream.content);
 }
 
-uintptr_t skip(const char **str, const char *list) {
+bool eof(const pgnStream stream) {
+  assert(stream.content != NULL && *stream.content != NULL);
+
+  return **stream.content == 0;
+}
+
+char take(const pgnStream* stream, const char *list) {
+  if (!is(*stream, list))
+    return 0;
+
+  const char r = **stream->content;
+  (*stream->content)++;
+  return r;
+}
+
+uintptr_t skip(const pgnStream* stream, const char *list) {
   uintptr_t size = 0;
-  for (; **str; (*str)++, size++)
-    if (FAIL(match(**str, list)))
-      break;
+  for (; is(*stream, list); size++) {
+    (*stream->content)++;
+  }
+
   return size;
 }
 
-char accept(const char **str, const char *list) {
-  const char r = match(**str, list);
-  if (r >= 0)
-    (*str)++;
-  return r;
+uintptr_t until(const pgnStream* stream, const char *list) {
+  uintptr_t size = 0;
+  for (; !eof(*stream) && !is(*stream, list); size++) {
+    (*stream->content)++;
+  }
+
+  return size;
+}
+
+const char *cursor(pgnStream stream) {
+  return *stream.content;
 }
