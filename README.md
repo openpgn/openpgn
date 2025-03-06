@@ -20,23 +20,26 @@ OpenPGN is single-pass, zero-copy PGN parser, written in C99.
 #include <pgn/pgn.h>
 
 ...
+const char* cursor = ...;
 
-char* cursor = <file>;
-
-intptr_t tagCount, moveCount;
 pgnTag tags[256];
-pgnMove moves[8192];
+pgnMove moves[256];
+uintptr_t tagL;
+uintptr_t moveL;
+enum pgnError code;
 
-while ((tagCount  = pgnTags(&cursor, tags, 256))    > 0 &&
-       (moveCount = pgnMoves(&cursor, moves, 8192)) > 0) {
-    // do stuff...
-}
+do {
+  tagL = sizeof(tags) / sizeof(tags[0]);
+  moveL = sizeof(moves) / sizeof(moves[0]);
+  if ((code = pgnTags(&cursor, tags, &tagL)) ||
+      (code = pgnMoves(&cursor, moves, &moveL))) {
+    fprintf(stderr, "error: failed with code %d\n", code);
+    return code;
+  }
+  
+  // do stuff...
 
-if (tagCount < 0) {
-    fprintf(stderr, "error: %ld", tagCount);
-} else if (moveCount < 0) {
-    fprintf(stderr, "error: %ld", moveCount);
-}
+} while (tagL > 0 && moveL > 0);
 ```
 
 You can use `pgnTags` and `pgnMoves` to read PGN file.
@@ -44,7 +47,7 @@ Umm... It's all of this library.
 
 I have no plan to expand parser for rich features.
 OpenPGN should be kept easy-to-use and simple.
-If you don't think so, Mail me or Create discussion in this repo.
+If you don't think so, Open discussion or Issue feature request.
 
 ## Disclaimer
 
