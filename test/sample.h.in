@@ -12,6 +12,9 @@ __asm__( \
 ); \
 extern const char name ;
 
+PGN_SAMPLE(__anglo_slav, "anglo-slav.pgn")
+PGN_SAMPLE(__caro_kann, "caro-kann.pgn")
+
 PGN_SAMPLE(__sample, "sample.pgn")
 PGN_SAMPLE(__sample_no_begin_bracket, "sample-no-begin-bracket.pgn")
 PGN_SAMPLE(__sample_no_key, "sample-no-key.pgn")
