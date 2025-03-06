@@ -38,9 +38,12 @@ int readTag(const char **content, pgnTag *tag) {
 enum pgnError pgnTags(const char **content, pgnTag buf[], uintptr_t *len) {
   uintptr_t i = 0;
   int code = 0;
-  for (; i < *len && !((code = readTag(content, &buf[i]))); i++)
-    if (strncmp(*content, "\n\n", 2) == 0)
+  for (; i < *len && !((code = readTag(content, &buf[i]))); i++) {
+    if (strncmp(*content, "\n\n", 2) == 0) {
+      i++;
       break;
+    }
+  }
   *len = i;
   return code == PGN_EOF ? PGN_SUCCESS : code;
 }

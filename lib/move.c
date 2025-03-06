@@ -160,6 +160,7 @@ enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) {
   for (; i < *len; i++) {
     CHECK_EOF;
     if ((code = readMisc(content, &buf[i])) != PGN_SKIP) {
+      i++;
       break;
     }
 
@@ -176,8 +177,10 @@ enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) {
     if ((code = readMove(content, &buf[i])))
       break;
 
-    if (strncmp(*content, "\n\n", 2) == 0)
+    if (strncmp(*content, "\n\n", 2) == 0) {
+      i++;
       break;
+    }
   }
   *len = i;
   return code;
