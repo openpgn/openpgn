@@ -1,4 +1,4 @@
-name: Deploy with Doxygen
+name: Doxygen
 
 on:
   push:

@@ -1,6 +1,7 @@
 # OpenPGN
 
 [![CTest](https://github.com/openpgn/openpgn/actions/workflows/ctest.yml/badge.svg)](https://github.com/openpgn/openpgn/actions/workflows/ctest.yml)
+[![Doxygen](https://github.com/openpgn/openpgn/actions/workflows/doxygen.yml/badge.svg)](https://github.com/openpgn/openpgn/actions/workflows/doxygen.yml)
 
 OpenPGN is single-pass, zero-copy PGN parser, written in C99.
 
