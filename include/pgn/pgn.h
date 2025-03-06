@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef OPENPGN_PGN_H
 #define OPENPGN_PGN_H
 
@@ -41,7 +43,10 @@ enum pgnError {
   PGN_NO_END_BRACE,
 
   /* internals */
+
+  /// *Reserved for internal usage*
   PGN_EOF,
+  /// *Reserved for internal usage*
   PGN_SKIP,
 };
 
@@ -111,8 +116,7 @@ extern "C" {
  * in this address.
  * @return An error code with `pgnError`
  */
-__attribute__((visibility("default"))) enum pgnError
-pgnTags(const char **content, pgnTag buf[], uintptr_t *len);
+enum pgnError pgnTags(const char **content, pgnTag buf[], uintptr_t *len) __attribute__((visibility("default")));
 
 /**
  * Parses movetext-section of pgn-game.
@@ -125,8 +129,7 @@ pgnTags(const char **content, pgnTag buf[], uintptr_t *len);
  * stored in this address.
  * @return An error code with `pgnError`
  */
-__attribute__((visibility("default"))) enum pgnError
-pgnMoves(const char **content, pgnMove buf[], uintptr_t *len);
+enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) __attribute__((visibility("default")));
 
 #if __cplusplus
 }
