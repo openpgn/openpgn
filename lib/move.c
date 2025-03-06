@@ -9,8 +9,7 @@
 #define CHECKS "#+"
 #define PROMOTIONS "=/"
 
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define IS(str) (memcmp(*content, str, MIN(strlen(*content), strlen(str))) == 0)
+#define IS(str) (strncmp(*content, str, strlen(str)) == 0)
 
 int readPager(const char **content) {
   pgnStream stream;
