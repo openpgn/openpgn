@@ -158,9 +158,13 @@ enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) {
     }
 
     const char *begin = *content;
-    if (readPager(content) != PGN_SUCCESS) {
+    code = readPager(content);
+    if (code == PGN_NO_SEQ_NUM) {
       *content = begin;
+    } else if (code != PGN_SUCCESS) {
+      return code;
     }
+
     if ((code = readMove(content, &buf[i])))
       break;
 
