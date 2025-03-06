@@ -46,6 +46,11 @@ int readMisc(const char **content, pgnMove *move) {
   if (take(stream, "$")) {
     return skip(stream, NUM) == 0 ? PGN_INV_NAG : PGN_SKIP;
   }
+  // comments
+  if (take(stream, "{")) {
+    until(stream, "}");
+    return take(stream, "}") ? PGN_SKIP : PGN_NO_END_BRACE;
+  }
 
   // forfeit
   if (IS("1/2-0")) {
