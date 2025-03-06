@@ -1,16 +1,17 @@
 #include "sample.h"
+#include <conf.h>
 
 #include <assert.h>
 #include <pgn/pgn.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-
-#define PRINT_ERROR 1
-#define BENCHMARK 1
-#define BENCHMARK_ITERATIONS 1
 
 int run(const char *cursor);
+
+#if PGN_BENCHMARK
+
+#include <string.h>
+#include <time.h>
 
 struct timespec diff(const struct timespec start, const struct timespec end)
 {
@@ -25,7 +26,6 @@ struct timespec diff(const struct timespec start, const struct timespec end)
   return temp;
 }
 
-#if BENCHMARK
 int benchmark(const char* name, const char *cursor) {
   struct timespec start, end;
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
@@ -33,7 +33,7 @@ int benchmark(const char* name, const char *cursor) {
   printf("=== BEGIN %s\n", name);
   fflush(stdout);
 
-  for (int i = 0; i < BENCHMARK_ITERATIONS; i++) {
+  for (int i = 0; i < PGN_BENCHMARK_ITERATIONS; i++) {
     const int code = run(cursor);
     if (code) {
       return code;
@@ -43,7 +43,13 @@ int benchmark(const char* name, const char *cursor) {
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
 
   const struct timespec d = diff(start, end);
-  printf("=== END %s : %ldms\n", name, (d.tv_sec * 1000 + d.tv_nsec / 1000000) / BENCHMARK_ITERATIONS);
+  size_t len = strlen(cursor);
+  ssize_t ms = d.tv_sec * 1000 + d.tv_nsec / 1000000;
+  printf(
+    "=== END %s : %ldms, %.1lfKiB/s\n",
+    name,
+    ms / PGN_BENCHMARK_ITERATIONS,
+    (double)len / (double)ms / 1024 * 1000);
   fflush(stdout);
 
   return 0;
@@ -52,7 +58,7 @@ int benchmark(const char* name, const char *cursor) {
 
 int main() {
 
-#if BENCHMARK
+#if PGN_BENCHMARK
   int code;
   if ((code = benchmark("caro-kann", &__caro_kann))) return code;
   if ((code = benchmark("anglo-slav", &__anglo_slav))) return code;

@@ -1,0 +1,5 @@
+#pragma once
+
+#cmakedefine PGN_PRINT_ERROR          @PGN_PRINT_ERROR@
+#cmakedefine PGN_BENCHMARK            @PGN_BENCHMARK@
+#cmakedefine PGN_BENCHMARK_ITERATIONS @PGN_BENCHMARK_ITERATIONS@
