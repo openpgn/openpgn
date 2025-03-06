@@ -39,7 +39,8 @@ enum pgnError pgnTags(const char **content, pgnTag buf[], uintptr_t *len) {
   uintptr_t i = 0;
   int code = 0;
   for (; i < *len && !((code = readTag(content, &buf[i]))); i++) {
-    if (strncmp(*content, "\n\n", 2) == 0) {
+    if (strncmp(*content, "\n\n", 2) == 0 ||
+        strncmp(*content, "\r\n\r\n", 4) == 0) {
       i++;
       break;
     }

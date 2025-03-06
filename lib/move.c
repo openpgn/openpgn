@@ -229,7 +229,8 @@ enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) {
     if ((code = readMove(content, &buf[i])))
       break;
 
-    if (strncmp(*content, "\n\n", 2) == 0) {
+    if (strncmp(*content, "\n\n", 2) == 0 ||
+        strncmp(*content, "\r\n\r\n", 4) == 0) {
       i++;
       break;
     }
