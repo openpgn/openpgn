@@ -7,6 +7,8 @@ int readTag(const char **content, pgnTag *tag) {
   stream.content = content;
 
   skip(stream, WS);
+  if (eof(stream))
+    return PGN_EOF;
 
   if (!take(stream, "["))
     return PGN_NO_BEGIN_BRACKET;
@@ -30,7 +32,7 @@ int readTag(const char **content, pgnTag *tag) {
   if (!take(stream, "]"))
     return PGN_NO_END_BRACKET;
 
-  return 0;
+  return PGN_SUCCESS;
 }
 
 enum pgnError pgnTags(const char **content, pgnTag buf[], uintptr_t *len) {
@@ -40,5 +42,5 @@ enum pgnError pgnTags(const char **content, pgnTag buf[], uintptr_t *len) {
     if (strncmp(*content, "\n\n", 2) == 0)
       break;
   *len = i;
-  return code;
+  return code == PGN_EOF ? PGN_SUCCESS : code;
 }

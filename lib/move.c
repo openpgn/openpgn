@@ -8,7 +8,8 @@
 #define CAPTURE "x:"
 #define CHECKS "#+"
 
-#define IS(str) (memcmp(*content, str, strlen(str)) == 0)
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+#define IS(str) (memcmp(*content, str, MIN(strlen(*content), strlen(str))) == 0)
 
 int readPager(const char **content) {
   pgnStream stream;
@@ -152,11 +153,17 @@ int readMove(const char **content, pgnMove *move) {
 enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) {
   uintptr_t i = 0;
   int code = 0;
+  pgnStream stream;
+  stream.content = content;
+
+#define CHECK_EOF skip(stream, WS); if (eof(stream)) return PGN_SUCCESS;
   for (; i < *len; i++) {
+    CHECK_EOF;
     if ((code = readMisc(content, &buf[i])) != PGN_SKIP) {
       break;
     }
 
+    CHECK_EOF;
     const char *begin = *content;
     code = readPager(content);
     if (code == PGN_NO_SEQ_NUM) {
@@ -165,6 +172,7 @@ enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) {
       return code;
     }
 
+    CHECK_EOF;
     if ((code = readMove(content, &buf[i])))
       break;
 
