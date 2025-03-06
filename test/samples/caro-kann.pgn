@@ -1744,7 +1744,7 @@ d5 Qf6 41. Qd7+ 1-0
 [Date "2007.12.29"]
 [Round "9.15"]
 [White "Calzetta Ruiz, Monica"]
-[Black "Viñal Gutierrez, Pedro"]
+[Black "Viï¿½al Gutierrez, Pedro"]
 [Result "1-0"]
 [ECO "B12"]
 [WhiteElo "2287"]
@@ -1850,7 +1850,7 @@ c4 66. Bc2 Nd3+ 67. Kf5 Nb4 0-1
 [Date "2007.11.20"]
 [Round "3.75"]
 [White "Baasanbat, Ganbat"]
-[Black "Okay, Ýlkin Ege"]
+[Black "Okay, ï¿½lkin Ege"]
 [Result "1-0"]
 [ECO "B12"]
 [PlyCount "55"]
@@ -2280,7 +2280,7 @@ Kc6 Rh2 47. Kb6 d3 48. Ra3 dxc2 49. Re3 Nd4 50. a5 Rh1 0-1
 [Date "2007.03.10"]
 [Round "8"]
 [White "Stokke, Kjetil"]
-[Black "Lundeby, Øyvind Andersen"]
+[Black "Lundeby, ï¿½yvind Andersen"]
 [Result "1-0"]
 [ECO "B12"]
 [WhiteElo "2303"]
@@ -2456,7 +2456,7 @@ Qa3 Qe4 48. Qxe7 g4 49. Re1 Qf4 1-0
 [Site "Fouesnant"]
 [Date "2006.10.31"]
 [Round "5.4"]
-[White "CAROFF, Frédéric"]
+[White "CAROFF, Frï¿½dï¿½ric"]
 [Black "PIANKOV, Evgenij"]
 [Result "1/2-1/2"]
 [ECO "B12"]
@@ -3588,8 +3588,8 @@ Rxc3 35. Rd3 Rc8 36. f3 h6 37. Rb3 Rc4 38. Nxb5 Rxg4 39. fxg4 Nxe5 40. Nd4 Nxg4
 Rxd5 Bg6 48. Rd4 Ne6 49. Rc4 Nf4 50. Kf1 Nh5 51. Rc8+ Kg7 52. Rc7+ Kf8 53. Rc8+
 Ke7 54. Rh8 Kf6 55. Rxh6 Kg7 56. Rxg6+ 1/2-1/2
 
-[Event "ØØÊ"]
-[Site "ØØÊ"]
+[Event "ï¿½ï¿½ï¿½"]
+[Site "ï¿½ï¿½ï¿½"]
 [Date "2005.12.27"]
 [Round "?"]
 [White "Mikheev"]
@@ -4350,7 +4350,7 @@ Bc6 42. Qh4 Kf8 43. Nxe6+ fxe6 44. Qf6+ Qf7 45. Qxh6+ Ke7 46. Kg3 Qg8+ 47. Qg5+
 Qxg5+ 48. fxg5 Kf7 49. Kf4 Kg7 50. Kg3 Be8 51. Kh4 Kh7 52. h6 Bd7 53. Bh5 Bc6
 54. Bf7 Bd7 55. Kh5 b4 56. g6+ Kh8 57. g7+ Kh7 58. g8=Q# 1-0
 
-[Event "Internet Section 09B g/8'+2""]
+[Event "Internet Section 09B g/8'+2''"]
 [Site "Dos Hermanas"]
 [Date "2004.03.09"]
 [Round "1"]
@@ -6308,11 +6308,11 @@ Qxh2 28. Rxg6 Qe5 29. Rdg1 Bf5 30. R6g5 Qe4 31. Rxf5 Qxf5 32. c6 Kf7 33. Bc5
 Qf4+ 34. Kb1 Qe4+ 35. Ka1 Rg8 36. Rc1 Rb8 37. Qxa6 Qc2 0-1
 
 [Event "Campeonato Nacional"]
-[Site "Caibarién"]
+[Site "Caibariï¿½n"]
 [Date "2002.??.??"]
 [Round "12"]
-[White "Piña, Sulennis"]
-[Black "Frómeta, Zirka"]
+[White "Piï¿½a, Sulennis"]
+[Black "Frï¿½meta, Zirka"]
 [Result "0-1"]
 [ECO "B12"]
 [WhiteElo "2371"]
@@ -6476,8 +6476,8 @@ Nc6 9. O-O O-O 10. Re1 e6 11. Qe2 cxd4 12. cxd4 f6 13. exf6 Qxf6 14. Bb5 Re8
 Be3 Bb7 22. Rac1 Rc8 23. Rxc8+ Bxc8 24. Rc1 Re8 25. Be2 Be5 26. Bg4 b5 27. Nd4
 Bb7 28. Nf3 Nf6 29. Nxe5 Rxe5 1/2-1/2
 
-[Event "Ust¡-Neratovice 3,5 "]
-[Site "Ust¡-Neratovice 3,5 "]
+[Event "Ustï¿½-Neratovice 3,5 "]
+[Site "Ustï¿½-Neratovice 3,5 "]
 [Date "2002.??.??"]
 [Round "?"]
 [White "Bujak, Michal"]
@@ -9061,7 +9061,7 @@ Ng3 O-O 9. O-O b5 10. Bb3 a6 11. Re1 e6 12. Bf4 Bb7 13. Qe2 Re8 14. Rad1 Qe7
 34. Be1 Nd3 35. Bd2 Kg7 36. Qb1 Rh8 37. Be1 Qh2+ 38. Kf1 Qxg2+ 39. Ke2 Rd8 40.
 Rd2 Qf3+ 41. Kf1 Nf4 0-1
 
-[Event "6.Pobeskydi "A""]
+[Event "6.Pobeskydi ''A''"]
 [Site "?"]
 [Date "1999.06.21"]
 [Round "4"]
@@ -9079,7 +9079,7 @@ Rd2 Qf3+ 41. Kf1 Nf4 0-1
 a5 9. h3 Ra7 10. a4 Re8 11. Nf1 dxe4 12. Bxe4 Bf5 13. Ng3 Bxe4 14. Nxe4 Qd5 15.
 Bxh6 1-0
 
-[Event "6.Pobeskydi "A""]
+[Event "6.Pobeskydi ''A''"]
 [Site "?"]
 [Date "1999.06.22"]
 [Round "5"]
