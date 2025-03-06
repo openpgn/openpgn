@@ -83,7 +83,10 @@ typedef struct __pgnMove {
   uint8_t toFile : 4;
   /// A one-based column index.
   uint8_t toRank : 4;
+  /// Type of piece; If `promotion` is 1, Type of piece **after promotion**.
   enum pgnPiece piece : 3;
+  /// Whether a pawn promoted in this movement.
+  uint8_t promotion : 1;
 } pgnMove;
 
 /// King-side castling (short castling)

@@ -7,6 +7,7 @@
 #define RANKS "12345678"
 #define CAPTURE "x:"
 #define CHECKS "#+"
+#define PROMOTIONS "=/"
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define IS(str) (memcmp(*content, str, MIN(strlen(*content), strlen(str))) == 0)
@@ -74,8 +75,7 @@ int readMisc(const char **content, pgnMove *move) {
   if (IS("1/2-0")) {
     *content += 5;
     *move = PGN_BLACK_FORFEIT;
-  }
-  else if (IS("0-1/2")) {
+  } else if (IS("0-1/2")) {
     *content += 5;
     *move = PGN_WHITE_FORFEIT;
   }
@@ -83,22 +83,33 @@ int readMisc(const char **content, pgnMove *move) {
   else if (IS("1-0")) {
     *content += 3;
     *move = PGN_WHITE_WIN;
-  }
-  else if (IS("1/2-1/2")) {
+  } else if (IS("1/2-1/2")) {
     *content += 7;
     *move = PGN_DRAW;
-  }
-  else if (IS("0-1")) {
+  } else if (IS("0-1")) {
     *content += 3;
     *move = PGN_BLACK_WIN;
-  }
-  else {
+  } else {
     return PGN_SKIP;
   }
 
   skip(stream, CHECKS);
 
   return PGN_SUCCESS;
+}
+
+int getPiece(const char ch) {
+  switch (ch) {
+#define PIECE(ch, p) case ch: return p;
+    PIECE('K', PGN_KING);
+    PIECE('Q', PGN_QUEEN);
+    PIECE('B', PGN_BISHOP);
+    PIECE('N', PGN_KNIGHT);
+    PIECE('P', PGN_PAWN);
+    PIECE('R', PGN_ROOK);
+#undef PIECE
+  default: return PGN_UNKNOWN_PIECE;
+  }
 }
 
 int readMove(const char **content, pgnMove *move) {
@@ -113,8 +124,7 @@ int readMove(const char **content, pgnMove *move) {
   if (IS("0-0-0") || IS("O-O-O")) {
     *content += 5;
     *move = PGN_LONG_CASTLING;
-  }
-  else if (IS("0-0") || IS("O-O")) {
+  } else if (IS("0-0") || IS("O-O")) {
     *content += 3;
     *move = PGN_CASTLING;
   }
@@ -123,23 +133,12 @@ int readMove(const char **content, pgnMove *move) {
     return PGN_SUCCESS;
   }
 
-
   if (isupper(**content)) {
-    switch (**content) {
-#define PGN_PIECE(ch, p)                                                       \
-  case ch:                                                                     \
-    move->piece = p;                                                           \
-    break;
-      PGN_PIECE('K', PGN_KING);
-      PGN_PIECE('Q', PGN_QUEEN);
-      PGN_PIECE('B', PGN_BISHOP);
-      PGN_PIECE('N', PGN_KNIGHT);
-      PGN_PIECE('P', PGN_PAWN);
-      PGN_PIECE('R', PGN_ROOK);
-#undef PGN_PIECE
-    default:
+    const int piece = getPiece(**content);
+    if (piece == PGN_UNKNOWN_PIECE) {
       return PGN_UNKNOWN_PIECE;
     }
+    move->piece = piece;
     (*content)++;
   } else {
     move->piece = PGN_PAWN;
@@ -165,6 +164,18 @@ int readMove(const char **content, pgnMove *move) {
     move->toRank = code - '1' + 1;
   }
 
+  // promo
+  if (take(stream, PROMOTIONS)) {
+    const int piece = getPiece(**content);
+    if (piece == PGN_UNKNOWN_PIECE) {
+      return PGN_UNKNOWN_PIECE;
+    }
+
+    move->piece = piece;
+    move->promotion = 1;
+    (*content)++;
+  }
+
   skip(stream, CHECKS);
 
   if (!move->toFile) {
@@ -183,7 +194,10 @@ enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) {
   pgnStream stream;
   stream.content = content;
 
-#define CHECK_EOF skip(stream, WS); if (eof(stream)) return PGN_SUCCESS;
+#define CHECK_EOF                                                              \
+  skip(stream, WS);                                                            \
+  if (eof(stream))                                                             \
+    return PGN_SUCCESS;
   for (; i < *len; i++) {
     while (!eof(stream) && (code = skipNAG(content)) == PGN_SUCCESS) {
     }
