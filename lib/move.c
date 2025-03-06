@@ -42,6 +42,10 @@ int readMisc(const char **content, pgnMove *move) {
   if (IS("=")) {
     return PGN_SKIP;
   }
+  // NAGs
+  if (take(stream, "$")) {
+    return skip(stream, NUM) == 0 ? PGN_INV_NAG : PGN_SKIP;
+  }
 
   // forfeit
   if (IS("1/2-0")) {
@@ -159,9 +163,13 @@ enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) {
 #define CHECK_EOF skip(stream, WS); if (eof(stream)) return PGN_SUCCESS;
   for (; i < *len; i++) {
     CHECK_EOF;
-    if ((code = readMisc(content, &buf[i])) != PGN_SKIP) {
+    code = readMisc(content, &buf[i]);
+    if (code == PGN_SUCCESS) {
       i++;
       break;
+    }
+    if (code != PGN_SKIP) {
+      return code;
     }
 
     CHECK_EOF;
