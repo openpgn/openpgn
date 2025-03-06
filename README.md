@@ -11,8 +11,7 @@ OpenPGN is single-pass, zero-copy PGN parser, written in C99.
 
 ## Missing Features
 
-- [Numeric Annotation Glyphs](https://en.wikipedia.org/wiki/Portable_Game_Notation#Numeric_Annotation_Glyphs)
-- [Comments](https://en.wikipedia.org/wiki/Portable_Game_Notation#Comments)
+- Recursive Variation (See `18: Formal syntax` of archive document)
 
 ## Usage
 
