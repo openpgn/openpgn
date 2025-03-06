@@ -1,15 +1,13 @@
 # OpenPGN
 
+[![CTest](https://github.com/openpgn/openpgn/actions/workflows/ctest.yml/badge.svg)](https://github.com/openpgn/openpgn/actions/workflows/ctest.yml)
+
 OpenPGN is single-pass, zero-copy PGN parser, written in C99.
 
 > [!NOTE]
 > PGN is an abbreviation for Portable Game Notation, a standard plain text format for recording chess games
-> For specification, See [Archive](https://ia802908.us.archive.org/26/items/pgn-standard-1994-03-12/PGN_standard_1994-03-12.txt)!
-
-## Status
-
-- [x] `pgnTags` (tested; **100% coverage** with samples)
-- [x] `pgnMoves` (not-tested)
+> For specification,
+> See [Archive](https://ia802908.us.archive.org/26/items/pgn-standard-1994-03-12/PGN_standard_1994-03-12.txt)!
 
 ## Missing Features
 
