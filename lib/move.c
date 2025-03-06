@@ -28,6 +28,33 @@ int readPager(const char **content) {
   return PGN_SUCCESS;
 }
 
+int skipNAG(const char **content) {
+  pgnStream stream;
+  stream.content = content;
+
+  skip(stream, WS);
+
+  if (take(stream, "$")) {
+    return skip(stream, NUM) ? PGN_SUCCESS : PGN_INV_NAG;
+  }
+
+  return PGN_SKIP;
+}
+
+int skipComment(const char **content) {
+  pgnStream stream;
+  stream.content = content;
+
+  skip(stream, WS);
+
+  if (take(stream, "{")) {
+    until(stream, "}");
+    return take(stream, "}") ? PGN_SUCCESS : PGN_NO_END_BRACE;
+  }
+
+  return PGN_SKIP;
+}
+
 int readMisc(const char **content, pgnMove *move) {
   pgnStream stream;
   stream.content = content;
@@ -41,15 +68,6 @@ int readMisc(const char **content, pgnMove *move) {
   // draw offer
   if (IS("=")) {
     return PGN_SKIP;
-  }
-  // NAGs
-  if (take(stream, "$")) {
-    return skip(stream, NUM) == 0 ? PGN_INV_NAG : PGN_SKIP;
-  }
-  // comments
-  if (take(stream, "{")) {
-    until(stream, "}");
-    return take(stream, "}") ? PGN_SKIP : PGN_NO_END_BRACE;
   }
 
   // forfeit
@@ -167,14 +185,21 @@ enum pgnError pgnMoves(const char **content, pgnMove buf[], uintptr_t *len) {
 
 #define CHECK_EOF skip(stream, WS); if (eof(stream)) return PGN_SUCCESS;
   for (; i < *len; i++) {
+    while (!eof(stream) && (code = skipNAG(content)) == PGN_SUCCESS) {
+    }
+    if (code != PGN_SKIP && code != PGN_SUCCESS)
+      return code;
+
+    while (!eof(stream) && (code = skipComment(content)) == PGN_SUCCESS) {
+    }
+    if (code != PGN_SKIP && code != PGN_SUCCESS)
+      return code;
+
     CHECK_EOF;
     code = readMisc(content, &buf[i]);
     if (code == PGN_SUCCESS) {
       i++;
       break;
-    }
-    if (code != PGN_SKIP) {
-      return code;
     }
 
     CHECK_EOF;
