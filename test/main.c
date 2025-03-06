@@ -4,9 +4,6 @@
 #include <pgn/pgn.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#define PGN_DUMP_TO_STDOUT 0
 
 int run(const char *cursor);
 
@@ -32,41 +29,22 @@ int main() {
 
 int run(const char *cursor) {
   pgnTag tags[256];
-  uintptr_t tagL = sizeof(tags) / sizeof(tags[0]);
   pgnMove moves[256];
-  uintptr_t moveL = sizeof(moves) / sizeof(moves[0]);
+  uintptr_t tagL;
+  uintptr_t moveL;
   enum pgnError code;
 
-  if ((code = pgnTags(&cursor, tags, &tagL))) {
-    fprintf(stderr, "error: pgnTags failed with code %d\n", code);
+  do {
+    tagL = sizeof(tags) / sizeof(tags[0]);
+    moveL = sizeof(moves) / sizeof(moves[0]);
+    if (!((code = pgnTags(&cursor, tags, &tagL))) &&
+        !((code = pgnMoves(&cursor, moves, &moveL)))) {
+      continue;
+    }
+
+    fprintf(stderr, "error: failed with code %d\n", code);
     return code;
-  }
-  if ((code = pgnMoves(&cursor, moves, &moveL))) {
-    fprintf(stderr, "error: pgnMoves failed with code %d\n", code);
-    return code;
-  }
-
-  printf("T:%lu M:%lu\n", tagL, moveL);
-
-#if PGN_DUMP_TO_STDOUT
-  char strBuf[256];
-  for (int i = 0; i < tagL; i++) {
-    strncpy(strBuf, tags[i].key, tags[i].keyLen);
-    strBuf[tags[i].keyLen] = 0;
-    printf("%s = ", strBuf);
-
-    strncpy(strBuf, tags[i].value, tags[i].valueLen);
-    strBuf[tags[i].valueLen] = 0;
-    printf("%s\n", strBuf);
-  }
-
-  for (int i = 0; i < moveL; i++) {
-    printf(
-      "%c %d %c %d\n",
-      moves[i].fromFile + 'a' - 1, moves[i].fromRank,
-      moves[i].toFile + 'a' - 1, moves[i].toRank);
-  }
-#endif
+  } while (tagL > 0 && moveL > 0);
 
   return EXIT_SUCCESS;
 }
