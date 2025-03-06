@@ -26,7 +26,7 @@ char take(const pgnStream stream, const char *list) {
 
 uintptr_t skip(const pgnStream stream, const char *list) {
   uintptr_t size = 0;
-  for (; is(stream, list); size++) {
+  for (; !eof(stream) && is(stream, list); size++) {
     (*stream.content)++;
   }
 
