@@ -3,12 +3,29 @@
 [![CTest](https://github.com/openpgn/openpgn/actions/workflows/ctest.yml/badge.svg)](https://github.com/openpgn/openpgn/actions/workflows/ctest.yml)
 [![Doxygen](https://github.com/openpgn/openpgn/actions/workflows/doxygen.yml/badge.svg)](https://github.com/openpgn/openpgn/actions/workflows/doxygen.yml)
 
-OpenPGN is single-pass, zero-copy PGN parser, written in C99.
+OpenPGN is ***single-pass, zero-copy, zero-alloc PGN parser***, written in C99.
 
 > [!NOTE]
 > PGN is an abbreviation for Portable Game Notation, a standard plain text format for recording chess games
 > For specification,
 > See [Archive](https://ia802908.us.archive.org/26/items/pgn-standard-1994-03-12/PGN_standard_1994-03-12.txt)!
+
+## Benchmark
+
+|          | Environment                                 |
+|:--------:|:--------------------------------------------|
+|    OS    | Arch Linux 6.13.5-arch-1-1                  |
+|   CPU    | Intel i7-12700H                             |
+|   RAM    | 32GB                                        |
+| Compiler | GCC 14.2.1                                  |
+| C Flags  | `-O3 -flto=auto -fno-fat-lto-objects -fPIC` |
+
+|          Sample File          | Size     | Elapsed | Throughout (KiB/s) |
+|:-----------------------------:|:---------|:--------|:-------------------|
+| `test/samples/caro-kann.pgn`  | 683 KiB  | 6ms     | 1045.2 KiB/s       |
+| `test/samples/anglo-slav.pgn` | 3750 KiB | 33ms    | 1124.5 KiB/s       |
+
+- Benchmark code: `test/main.c`
 
 ## Missing Features
 
