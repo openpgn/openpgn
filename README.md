@@ -19,6 +19,7 @@ OpenPGN is ***single-pass, zero-copy, zero-alloc PGN parser***, written in C99.
 |   RAM    | 32GB                                        |
 | Compiler | GCC 14.2.1                                  |
 | C Flags  | `-O3 -flto=auto -fno-fat-lto-objects -fPIC` |
+| Version  | 1.0.0                                       |
 
 |          Sample File          | Size     | Elapsed | Throughout (MiB/s) |
 |:-----------------------------:|:---------|:--------|:-------------------|
