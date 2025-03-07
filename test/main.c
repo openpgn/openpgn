@@ -44,11 +44,11 @@ int benchmark(const char* name, const char *cursor) {
 
   const struct timespec d = diff(start, end);
   size_t len = strlen(cursor);
-  ssize_t ms = d.tv_sec * 1000 + d.tv_nsec / 1000000;
+  ssize_t ms = (d.tv_sec * 1000 + d.tv_nsec / 1000000) / PGN_BENCHMARK_ITERATIONS;
   printf(
     "=== END %s : %ldms, %.1lfKiB/s\n",
     name,
-    ms / PGN_BENCHMARK_ITERATIONS,
+    ms,
     (double)len / (double)ms / 1024 * 1000);
   fflush(stdout);
 

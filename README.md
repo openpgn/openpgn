@@ -20,10 +20,10 @@ OpenPGN is ***single-pass, zero-copy, zero-alloc PGN parser***, written in C99.
 | Compiler | GCC 14.2.1                                  |
 | C Flags  | `-O3 -flto=auto -fno-fat-lto-objects -fPIC` |
 
-|          Sample File          | Size     | Elapsed | Throughout (KiB/s) |
+|          Sample File          | Size     | Elapsed | Throughout (MiB/s) |
 |:-----------------------------:|:---------|:--------|:-------------------|
-| `test/samples/caro-kann.pgn`  | 683 KiB  | 6ms     | 1045.2 KiB/s       |
-| `test/samples/anglo-slav.pgn` | 3750 KiB | 33ms    | 1124.5 KiB/s       |
+| `test/samples/caro-kann.pgn`  | 683 KiB  | 6ms     | 111 MiB/s          |
+| `test/samples/anglo-slav.pgn` | 3750 KiB | 33ms    | 110 MiB/s          |
 
 - Benchmark code: `test/main.c`
 
