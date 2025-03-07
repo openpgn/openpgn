@@ -7,6 +7,7 @@
 #define RANKS "12345678"
 #define CAPTURE "x:"
 #define CHECKS "#+"
+#define NUNN_CONVS "!?"
 #define PROMOTIONS "=/"
 
 #define IS(str) (strncmp(*content, str, strlen(str)) == 0)
@@ -93,6 +94,7 @@ int readMisc(const char **content, pgnMove *move) {
   }
 
   skip(stream, CHECKS);
+  skip(stream, NUNN_CONVS);
 
   return PGN_SUCCESS;
 }
